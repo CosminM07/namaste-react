@@ -5,7 +5,7 @@ import {resList} from "../utils/mockData";
 const Body = () => {
   // Local State Variable - Super powerful variable
   const [listOfRestaurants, setListOfRestraunt] = useState(resList);
-
+  console.log(useState(resList))
   return (
     <div className="body">
       <div className="filter">
