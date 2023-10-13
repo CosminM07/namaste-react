@@ -5,6 +5,8 @@ import Shimmer from "./Shimmer";
 const Body = () => {
   // Local State Variable - Super powerful variable
   const [listOfRestaurants, setListOfRestraunt] = useState([]);
+  const [filteredRestaurant, setFilteredRestaurant] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -20,31 +22,35 @@ const Body = () => {
     //console.log(restaurants)
     // Optional Chaining
     setListOfRestraunt(restaurants);
-    //setFilteredRestaurant(restaurants);
+    setFilteredRestaurant(restaurants);
   };
 
-  if (listOfRestaurants.length === 0) {
-    return <Shimmer />
-  }
-
-  return (
+  return listOfRestaurants.length === 0 ? <Shimmer /> : (
     <div className="body">
       <div className="filter">
+        <div className="search">
+          <input type="text" className="search-box" value={searchText} onChange={(e) => {
+            setSearchText(e.target.value)
+          }}/>
+          <button onClick={() => {
+            const filteredRestaurant = listOfRestaurants.filter((res) => res.info.name.toLowerCase().includes(searchText.toLocaleLowerCase()))
+            setFilteredRestaurant(filteredRestaurant)
+          }}>Search</button>
+        </div>
         <button
-          className="filter-btn"
-          onClick={() => {
-            const filteredList = listOfRestaurants.filter(
-              (res) => res.data.avgRating > 4
-            );
-            setListOfRestraunt(filteredList);
-          }}
+            className="filter-btn"
+            onClick={() => {
+              const filteredList = listOfRestaurants.filter(
+                (res) => res.info.avgRating > 4
+              );
+              setFilteredRestaurant(filteredList);
+            }}
         >
           Top Rated Restaurants
         </button>
       </div>
       <div className="res-container">
-        {listOfRestaurants.map((restaurant) => (
-          //console.log(restaurant)
+        {filteredRestaurant.map((restaurant) => (
           <RestaurantCard key={restaurant.info?.id} resData={restaurant?.info} />
         ))}
       </div>
