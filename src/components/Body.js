@@ -1,11 +1,32 @@
 import RestaurantCard from "./RestaurantCard";
-import { useState } from "react";
-import {resList} from "../utils/mockData";
+import { useState, useEffect } from "react";
+import Shimmer from "./Shimmer";
 
 const Body = () => {
   // Local State Variable - Super powerful variable
-  const [listOfRestaurants, setListOfRestraunt] = useState(resList);
-  console.log(useState(resList))
+  const [listOfRestaurants, setListOfRestraunt] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const data = await fetch(
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
+    );
+
+    const json = await data.json();
+    const restaurants = json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+    //console.log(restaurants)
+    // Optional Chaining
+    setListOfRestraunt(restaurants);
+    //setFilteredRestaurant(restaurants);
+  };
+
+  if (listOfRestaurants.length === 0) {
+    return <Shimmer />
+  }
+
   return (
     <div className="body">
       <div className="filter">
@@ -23,7 +44,8 @@ const Body = () => {
       </div>
       <div className="res-container">
         {listOfRestaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.data.id} resData={restaurant} />
+          //console.log(restaurant)
+          <RestaurantCard key={restaurant.info?.id} resData={restaurant?.info} />
         ))}
       </div>
     </div>
