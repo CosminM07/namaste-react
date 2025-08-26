@@ -1,12 +1,15 @@
 import RestaurantCard from "./RestaurantCard";
 import resList from "../../utils/mockData";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Body = () => {
   // Local state variable
-  const [listOfRestaurants, setListOfRestaurant] = useState([]);
-  const arr = useState([]);
-  console.log(arr);
+  const [listOfRestaurants, setListOfRestaurant] = useState(resList);
+  console.log("Body rendered");
+  useEffect(() => {
+    console.log("useEffect called");
+  });
+
   return (
     <div className="body">
       <div className="filter">
