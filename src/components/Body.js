@@ -9,10 +9,8 @@ const Body = () => {
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-  console.log("Body rendered");
   useEffect(() => {
     fetchData();
-    console.log("useEffect called");
   }, []);
 
   const fetchData = async () => {
@@ -20,7 +18,6 @@ const Body = () => {
       "https://www.swiggy.com/dapi/restaurants/list/v5?lat=21.1702401&lng=72.83106070000002&page_type=DESKTOP_WEB_LISTING"
     );
     const json = apiResponse;
-    console.log(json?.data?.cards[4]?.card?.card);
     // Optional Chaining
     setListOfRestraunt(
       json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
